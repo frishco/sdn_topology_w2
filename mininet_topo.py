@@ -42,16 +42,17 @@ class customTopo(Topo):
                 self.addLink(core, edge, **configuration)
 
 
-def test(argv):
+def test():
     ip = '127.0.0.1'
-    if len(argv) > 0:
-        ip = argv[0]
-
+    if len(sys.argv) > 1:
+        ip = sys.argv[1]
+    
+    print "Building topology"
     topo = customTopo()
     net = Mininet(topo=topo, link=TCLink, controller=None)
     
 
-    print "start RYU controller"
+    print "start RYU controller in ip: {}".format(ip)
     raw_input()
 
     net.addController('rmController', controller=RemoteController,
@@ -70,4 +71,4 @@ def test(argv):
 
 if __name__ == '__main__':
     setLogLevel('info')
-    test(sys.argv[1:])
+    test()

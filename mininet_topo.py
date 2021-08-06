@@ -28,14 +28,14 @@ class customTopo(Topo):
 
         
         for i in range(numCores):
-            core = f'C{i+1}'
+            core = 'C{}'.format(i+1)
             self.addSwitch(core, protocols='OpenFlow13')
             for j in range(numEdges):
-                edge = f'E{j+1}'
+                edge = 'E{}'.format(j+1)
                 if i ==0:
                     self.addSwitch(edge, protocols='OpenFlow13')
                     for k in range(hostsPerEdge):
-                        host = f'H{2 * j + k + 1}'
+                        host = 'H{}'.format({2 * j + k + 1})
                         self.addHost(host)
                         self.addLink(edge, host, **configuration)
                 

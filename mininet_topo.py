@@ -8,6 +8,7 @@
 
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import sys
 from mininet.cli import CLI
 from mininet.link import TCLink
 from mininet.log import setLogLevel, info, warn
@@ -22,9 +23,30 @@ class customTopo(Topo):
     
     def build(self, numCores = 3, numEdges=5, hostsPerEdge=2, bw = 5, delay = None):
         #Write tree construction here
-        
 
-def test():
+        configuration = dict(bw=bw, delay=delay,max_queue_size=0, loss=0, use_htb=True)
+
+        
+        for i in range(numCores):
+            core = f'C{i+1}'
+            self.addSwitch(core, protocols='OpenFlow13')
+            for j in range(numEdges):
+                edge = f'E{j+1}'
+                if i ==0:
+                    self.addSwitch(edge, protocols='OpenFlow13')
+                    for k in range(hostsPerEdge):
+                        host = f'H{2 * j + k + 1}'
+                        self.addHost(host)
+                        self.addLink(edge, host, **configuration)
+                
+                self.addLink(core, edge, **configuration)
+
+
+def test(argv):
+    ip = '127.0.0.1'
+    if len(argv) > 0:
+        ip = argv[0]
+
     topo = customTopo()
     net = Mininet(topo=topo, link=TCLink, controller=None)
     
@@ -33,7 +55,7 @@ def test():
     raw_input()
 
     net.addController('rmController', controller=RemoteController,
-                      ip='127.0.0.1', port=6633)
+                      ip=ip, port=6633)
     net.start()
 
     print "Testing network connectivity"
@@ -48,4 +70,4 @@ def test():
 
 if __name__ == '__main__':
     setLogLevel('info')
-    test()
+    test(sys.argv[1:])

@@ -32,10 +32,10 @@ class customTopo(Topo):
             self.addSwitch(core, protocols='OpenFlow13')
             for j in range(numEdges):
                 edge = 'E{}'.format(j+1)
-                if i ==0:
+                if i == 0:
                     self.addSwitch(edge, protocols='OpenFlow13')
                     for k in range(hostsPerEdge):
-                        host = 'H{}'.format({2 * j + k + 1})
+                        host = 'H{}'.format(2 * j + k + 1)
                         self.addHost(host)
                         self.addLink(edge, host, **configuration)
                 

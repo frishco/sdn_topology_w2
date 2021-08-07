@@ -34,7 +34,7 @@ class customTopo(Topo):
             for edge in edges:
                 self.addLink(core, edge, **configuration)
     
-        for edge, e in enumerate(edges):
+        for e, edge in enumerate(edges):
             for host in hosts[e]:
                 self.addLink(host, edge, **configuration)
             

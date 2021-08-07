@@ -24,7 +24,7 @@ class customTopo(Topo):
     def build(self, numCores = 3, numEdges=5, hostsPerEdge=2, bw = 5, delay = None):
         #Write tree construction here
 
-        configuration = dict(bw=bw, delay=delay,max_queue_size=0, loss=0, use_htb=True)
+        configuration = dict(bw=bw, delay=delay,max_queue_size=1, loss=0, use_htb=True)
 
         
         for i in range(numCores):

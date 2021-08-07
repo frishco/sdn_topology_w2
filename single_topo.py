@@ -46,10 +46,13 @@ def perfTest( lossy=True ):
                    host=CPULimitedHost, link=TCLink,
                    autoStaticArp=True )
     net.start()
-    print "Testing network connectivity"
+   
     net.pingAll()
     info( "Dumping host connections\n" )
     dumpNodeConnections(net.hosts)
+    
+    print "Testing network connectivity"
+    net.pingAll()
     info( "Testing bandwidth between h1 and h4\n" )
     h1, h4 = net.getNodeByName('h1', 'h4')
     net.iperf( ( h1, h4 ), l4Type='UDP' )

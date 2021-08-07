@@ -22,24 +22,22 @@ class customTopo(Topo):
     """create topology with numCore core switches
     numEdge edge switches, hostsPerEdge, bw bandwidth, delay"""
     
-    def build(self, numCores = 3, numEdges=5, hostsPerEdge=2, bw = 5, delay = None):
+    def build(self, numCores = 2, numEdges=3, hostsPerEdge=2, bw = 5, delay = None):
 
-        configuration = dict(bw=bw, delay=delay,max_queue_size=0, loss=0, use_htb=True)
-        cores = []
-        for c in range(numCores):
-            cores.append(self.addSwitch('c%s' % (c + 1), protocols='OpenFlow13'))
-            
-        for e in range(numEdges):
-            edge = self.addSwitch( 'e%s' % (e + 1), protocols='OpenFlow13')
-            
-            for core in cores:
-                self.addLink(edge, core, **configuration)
+        configuration = dict(bw=bw, delay=delay, max_queue_size=1, loss=0, use_htb=True)
 
-
-            for h in range(hostsPerEdge):
-                host = self.addHost('h%s' % (2 * e + h + 1))
+        hosts = [ [self.addHost( 'h%s' % h ) for h in range( e * hostsPerEdge + 1, (e+1) * hostsPerEdge + 1)] for e in range(numEdges) ]
+        edges = [ self.addSwitch('c%s' % e, protocols='OpenFlow13')  for e in range( 1, numEdges + 1)]
+        cores = [ self.addSwitch('c%s' % c, protocols='OpenFlow13')  for c in range( 1, numCores + 1)]
+        
+        for core in cores:
+            for edge in edges:
+                self.addLink(core, edge, **configuration)
+    
+        for edge, e in enumerate(edges):
+            for host in hosts[e]:
                 self.addLink(host, edge, **configuration)
-           
+            
            
 def test():
     ip = '127.0.0.1'

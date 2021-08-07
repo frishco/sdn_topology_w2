@@ -27,7 +27,7 @@ class customTopo(Topo):
         configuration = dict(bw=bw, delay=delay, max_queue_size=1, loss=0, use_htb=True)
 
         hosts = [ [self.addHost( 'h%s' % h ) for h in range( e * hostsPerEdge + 1, (e+1) * hostsPerEdge + 1)] for e in range(numEdges) ]
-        edges = [ self.addSwitch('c%s' % e, protocols='OpenFlow13')  for e in range( 1, numEdges + 1)]
+        edges = [ self.addSwitch('e%s' % e, protocols='OpenFlow13')  for e in range( 1, numEdges + 1)]
         cores = [ self.addSwitch('c%s' % c, protocols='OpenFlow13')  for c in range( 1, numCores + 1)]
         
         for core in cores:

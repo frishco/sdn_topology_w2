@@ -25,22 +25,21 @@ class customTopo(Topo):
         #Write tree construction here
 
         configuration = dict(bw=bw, delay=delay,max_queue_size=1, loss=0, use_htb=True)
-
         
         for i in range(numCores):
             core = 'c{}'.format(i+1)
             self.addSwitch(core, protocols='OpenFlow13')
-            for j in range(numEdges):
-                edge = 'e{}'.format(j+1)
-                if i == 0:
-                    self.addSwitch(edge, protocols='OpenFlow13')
-                    for k in range(hostsPerEdge):
-                        host = 'h{}'.format(2 * j + k + 1)
-                        self.addHost(host)
-                        self.addLink(edge, host, **configuration)
-                
-                self.addLink(core, edge, **configuration)
 
+        for e in range(numEdges):
+            edge = self.addSwitch( 'e%s' % (e + 1), protocols='OpenFlow13')
+
+            for h in range(hostsPerEdge):
+                host = self.addHost('h%s' % (2*e + h + 1))
+                self.addLink(host, edge, **configuration)
+           
+            for c in range(numCores):
+                core = self.addSwitch('e%s' % (c + 1), protocols='OpenFlow13')
+                self.addLink(edge, core, **configuration)
 
 def test():
     ip = '127.0.0.1'

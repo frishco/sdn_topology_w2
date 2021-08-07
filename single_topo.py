@@ -46,6 +46,8 @@ def perfTest( lossy=True ):
                    host=CPULimitedHost, link=TCLink,
                    autoStaticArp=True )
     net.start()
+    print "Testing network connectivity"
+    net.pingAll()
     info( "Dumping host connections\n" )
     dumpNodeConnections(net.hosts)
     info( "Testing bandwidth between h1 and h4\n" )

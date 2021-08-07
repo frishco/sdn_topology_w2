@@ -27,8 +27,7 @@ class SingleSwitchTopo( Topo ):
         switch = self.addSwitch('s1')
         for h in range(n):
             # Each host gets 50%/n of system CPU
-            host = self.addHost('h%s' % (h + 1),
-                                cpu=.5 / n)
+            host = self.addHost('h%s' % (h + 1))
             if lossy:
                 # 10 Mbps, 5ms delay, 10% packet loss
                 self.addLink(host, switch,

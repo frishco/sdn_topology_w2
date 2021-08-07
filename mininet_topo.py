@@ -24,20 +24,19 @@ class customTopo(Topo):
     
     def build(self, numCores = 2, numEdges=3, hostsPerEdge=2, bw = 5, delay = None):
 
-        configuration = dict(bw=bw, delay=delay, max_queue_size=1, loss=0, use_htb=True)
+        configuration = dict(bw=bw, delay=delay, max_queue_size=0, loss=0, use_htb=True)
 
         hosts = [ [self.addHost( 'h%s' % h ) for h in range( e * hostsPerEdge + 1, (e+1) * hostsPerEdge + 1)] for e in range(numEdges) ]
         edges = [ self.addSwitch('e%s' % e, protocols='OpenFlow13')  for e in range( 1, numEdges + 1)]
         cores = [ self.addSwitch('c%s' % c, protocols='OpenFlow13')  for c in range( 1, numCores + 1)]
         
-        for core in cores:
-            for edge in edges:
-                self.addLink(core, edge, **configuration)
-    
         for e, edge in enumerate(edges):
             for host in hosts[e]:
                 self.addLink(host, edge, **configuration)
-            
+
+        for core in cores:
+            for edge in edges:
+                self.addLink(edge, core, **configuration)    
            
 def test():
     ip = '127.0.0.1'
@@ -57,13 +56,13 @@ def test():
     net.start()
 
     print "Testing network connectivity"
-    net.pingAll()
+    #net.pingAll()
     #dumpNodeConnections(net.hosts)
-    print "Testing bandwidth between h1 and h4"
-    h1, h4 = net.get('h1', 'h4')
-    net.iperf((h1, h4))
+    #print "Testing bandwidth between h1 and h4"
+    #h1, h4 = net.get('h1', 'h4')
+    #net.iperf((h1, h4))
     CLI(net)
-    net.stop()
+    #net.stop()
     
 
 if __name__ == '__main__':

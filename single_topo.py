@@ -33,6 +33,9 @@ class SingleSwitchTopo( Topo ):
                 # 10 Mbps, 5ms delay, 10% packet loss
                 self.addLink(host, switch,
                              bw=10, delay='5ms', loss=10, use_htb=True)
+                
+                self.addLink(switch, host,
+                             bw=10, delay='5ms', loss=10, use_htb=True)
             else:
                 # 10 Mbps, 5ms delay, no packet loss
                 self.addLink(host, switch,
@@ -47,7 +50,6 @@ def perfTest( lossy=True ):
                    autoStaticArp=True )
     net.start()
    
-    net.pingAll()
     info( "Dumping host connections\n" )
     dumpNodeConnections(net.hosts)
     

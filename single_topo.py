@@ -45,6 +45,10 @@ def perfTest( lossy=True ):
     net = Mininet( topo=topo,
                    host=CPULimitedHost, link=TCLink,
                    autoStaticArp=True )
+   
+    net.addController('c1', controller=RemoteController,
+                      ip=ip, port=6633)
+    
     info( "Lossy %s\n" % lossy )
     net.start()
     info( "Dumping host connections\n" )
@@ -52,7 +56,7 @@ def perfTest( lossy=True ):
     info( "Testing bandwidth between h1 and h4\n" )
     h1, h4 = net.getNodeByName('h1', 'h4')
     net.iperf( ( h1, h4 ), l4Type='UDP' )
-    net.stop()
+    #net.stop()
 
 
 if __name__ == '__main__':

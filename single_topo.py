@@ -48,7 +48,7 @@ def perfTest( lossy=True ):
                    controller=None )
    
     net.addController('c1', controller=RemoteController,
-                      ip=ip, port=6633)
+                      ip='127.0.0.1', port=6633)
     
     info( "Lossy %s\n" % lossy )
     net.start()

@@ -12,10 +12,11 @@ from sys import argv
 
 from mininet.topo import Topo
 from mininet.net import Mininet
-from mininet.node import CPULimitedHost
+from mininet.node import CPULimitedHost, RemoteController
 from mininet.link import TCLink
 from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel, info
+
 
 
 # It would be nice if we didn't have to do this:

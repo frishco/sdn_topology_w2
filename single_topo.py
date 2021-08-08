@@ -56,7 +56,7 @@ def perfTest( lossy=True ):
     dumpNodeConnections(net.hosts)
     info( "Testing bandwidth between h1 and h4\n" )
     h1, h4 = net.getNodeByName('h1', 'h4')
-    net.iperf( ( h1, h4 ), l4Type='UDP' )
+    #net.iperf( ( h1, h4 ), l4Type='UDP' )
     #net.stop()
 
 

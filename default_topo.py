@@ -32,6 +32,8 @@ class customTopo(Topo):
 
             if last:
                 self.addLink(last, edge)
+            
+            last = edge
         
 
 def test():

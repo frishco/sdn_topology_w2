@@ -44,7 +44,7 @@ def perfTest( lossy=True ):
     topo = SingleSwitchTopo( n=4, lossy=lossy )
     net = Mininet( topo=topo,
                    host=CPULimitedHost, link=TCLink,
-                   autoStaticArp=True )
+                   controller=None )
    
     net.addController('c1', controller=RemoteController,
                       ip=ip, port=6633)
